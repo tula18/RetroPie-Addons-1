@@ -1,0 +1,22 @@
+--- Makefile	2018-09-21 03:44:04.000000000 +0200
++++ Makefile	2018-09-21 03:32:10.000000000 +0200
+@@ -137,2 +137,19 @@
+ 
++# Raspberry Pi 2
++else ifeq ($(platform), rpi2)
++   TARGET = $(TARGET_NAME)_libretro.so
++   DEFINES += -fPIC -Wno-multichar -D_ARM_ASSEM_
++   DEFINES += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
++   DEFINES += -O3 -ftree-vectorize -funsafe-math-optimizations
++   LDFLAGS += -shared -Wl,--version-script=../link.T -fPIC
++   HAVE_NEON = 1
++# Raspberry Pi 3
++else ifeq ($(platform), rpi3)
++   TARGET = $(TARGET_NAME)_libretro.so
++   DEFINES += -fPIC -Wno-multichar -D_ARM_ASSEM_
++   DEFINES += -marm -march=armv8-a+crc -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++   DEFINES += -O3 -ftree-vectorize -funsafe-math-optimizations
++   LDFLAGS += -shared -Wl,--version-script=../link.T -fPIC
++   HAVE_NEON = 1
++
+ else ifeq ($(platform), android-armv7)
